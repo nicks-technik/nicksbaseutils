@@ -7,7 +7,7 @@ import argparse
 # import yaml
 
 # from dotenv import load_dotenv
-from base_utils import (
+from src.nicksbaseutils.nicksbaseutils import (
     setup_logging,
     load_env_variables,
     wait_for_any_key,
