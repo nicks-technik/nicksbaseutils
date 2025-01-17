@@ -15,20 +15,12 @@ Functions:
 
     wait_for_any_key(msg="Press any key to continue...") -> None:
         Waits for any keypress without a timeout and displays a message.
-
-    wait_for_yn(msg="Please press Y/y or N/n") -> bool:
-        Waits for a Y/y or N/n keypress and returns True if Y/y is pressed, False otherwise.
-
-    run_command(command, wait=True):
-        Runs a shell command using subprocess. Waits for it to complete if wait is True.
 """
 
 import os
 import logging
 import logging.config
-
-# import argparse
-
+import argparse
 import select
 import sys
 import subprocess
@@ -43,7 +35,7 @@ def setup_logging(
     parser,
     default_path="logging.log",
     default_level=logging.INFO,
-    env_key="LOG_CFG",
+    env_key=".log_cfg.yaml",
 ) -> None:
     """Setup logging configuration"""
     args = parser.parse_args()
@@ -72,11 +64,12 @@ def setup_logging(
 
 def load_env_variables(dotenv_path=".env"):
     """Load environment variables from .env file"""
-    load_dotenv(dotenv_path=dotenv_path)
+    load_dotenv(dotenv_path=dotenv_path, override=True)
 
 
-def wait_for_keypress(timeout=None):
+def wait_for_keypress(timeout: int = 5):
     """Waits for a keypress, optionally with a timeout."""
+    print(f"Waiting for keypress with timeout: {timeout}")
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
@@ -96,7 +89,7 @@ def wait_for_keypress(timeout=None):
 def wait_for_any_key(msg="Press any key to continue...") -> None:
     """Waits for any keypress without timeout"""
     print(msg)
-    wait_for_keypress()
+    wait_for_keypress(0)
 
 
 def wait_for_yn(msg="Please press Y/y or N/n") -> bool:
@@ -127,8 +120,8 @@ def run_command(command, wait=True):
     """
     if wait:
         subprocess.run(command, check=False, shell=True)
-        print("\nCommand completed.\n")
+        logging.info("\nCommand completed.\n")
     else:
         p = subprocess.Popen(command, shell=True)
-        print("\nCommand started, not waiting for it to complete.\n")
+        logging.info("\nCommand started, not waiting for it to complete.\n")
         return p
