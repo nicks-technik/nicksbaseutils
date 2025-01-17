@@ -4,10 +4,11 @@ import logging
 import logging.config
 import argparse
 
+
 # import yaml
 
 # from dotenv import load_dotenv
-from src.nicksbaseutils.nicksbaseutils import (
+from src.nicksutils.nicksbaseutils import (
     setup_logging,
     load_env_variables,
     wait_for_any_key,
@@ -38,31 +39,31 @@ def parse_arguments():
 def main():
     """Main function of the program"""
 
-    logger.info("Starting my awesome script...")
+    logging.info("Starting my awesome script...")
 
     # Access environment variables and command-line arguments
     my_var = os.getenv("MY_VAR")
-    logger.debug("Environment variable MY_VAR: %s", my_var)
+    logging.debug("Environment variable MY_VAR: %s", my_var)
 
     wait_for_any_key()
-    logger.debug("This is a debug message")
-    logger.warning("This is a warning message")
-    logger.error("This is an error message")
-    logger.critical("This is a critical message")
+    logging.debug("This is a debug message")
+    logging.warning("This is a warning message")
+    logging.error("This is an error message")
+    logging.critical("This is a critical message")
 
     decision = wait_for_yn()
     if decision:
-        logger.info("User pressed Y")
+        logging.info("User pressed Y")
     else:
-        logger.info("User pressed N")
+        logging.info("User pressed N")
 
     # Your main application logic goes here
-    logger.debug("This is a debug message")
-    logger.warning("This is a warning message")
-    logger.error("This is an error message")
-    logger.critical("This is a critical message")
+    logging.debug("This is a debug message")
+    logging.warning("This is a warning message")
+    logging.error("This is an error message")
+    logging.critical("This is a critical message")
 
-    logger.info("Script finished. Infomation File: %s", __file__)
+    logging.info("Script finished. Infomation File: %s", __file__)
 
 
 if __name__ == "__main__":
@@ -77,8 +78,8 @@ if __name__ == "__main__":
     # Load a custom logging configuration if it's passed as an argument,
     # otherwise, load default or use env variable
     setup_logging(parser=parser)  # pass the parser
-    logger = logging.getLogger(__name__)  # Get the module logger
+    logging = logging.getLogger(__name__)  # Get the module logger
 
     main()
 
-    logger.info("Execution time: %.2f seconds", time.time() - start_time)
+    logging.info("Execution time: %.2f seconds", time.time() - start_time)
